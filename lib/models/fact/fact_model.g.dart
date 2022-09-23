@@ -23,8 +23,8 @@ Map<String, dynamic> _$RandomFactToJson(RandomFact instance) =>
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
 
-class _RestClient implements RestClient {
-  _RestClient(
+class _RestFact implements RestFact {
+  _RestFact(
     this._dio, {
     this.baseUrl,
   }) {
@@ -36,13 +36,13 @@ class _RestClient implements RestClient {
   String? baseUrl;
 
   @override
-  Future<List<RandomFact>> getTasks() async {
+  Future<RandomFact> getFact() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio
-        .fetch<List<dynamic>>(_setStreamType<List<RandomFact>>(Options(
+        .fetch<Map<String, dynamic>>(_setStreamType<RandomFact>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -54,9 +54,7 @@ class _RestClient implements RestClient {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    var value = _result.data!
-        .map((dynamic i) => RandomFact.fromJson(i as Map<String, dynamic>))
-        .toList();
+    final value = RandomFact.fromJson(_result.data!);
     return value;
   }
 

@@ -21,8 +21,8 @@ Map<String, dynamic> _$RandomImageToJson(RandomImage instance) =>
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
 
-class _RestClient implements RestClient {
-  _RestClient(
+class _RestImage implements RestImage {
+  _RestImage(
     this._dio, {
     this.baseUrl,
   }) {
@@ -34,13 +34,13 @@ class _RestClient implements RestClient {
   String? baseUrl;
 
   @override
-  Future<List<RandomImage>> getTasks() async {
+  Future<RandomImage> getImage() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio
-        .fetch<List<dynamic>>(_setStreamType<List<RandomImage>>(Options(
+        .fetch<Map<String, dynamic>>(_setStreamType<RandomImage>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -52,9 +52,7 @@ class _RestClient implements RestClient {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    var value = _result.data!
-        .map((dynamic i) => RandomImage.fromJson(i as Map<String, dynamic>))
-        .toList();
+    final value = RandomImage.fromJson(_result.data!);
     return value;
   }
 

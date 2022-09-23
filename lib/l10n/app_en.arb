@@ -2,5 +2,7 @@
     "titleHistory": "Fact history",
     "fact": "Fact",
     "more":"Another fact!",
-    "localLan": "en"
+    "localLan": "en",
+    "loadCard": "Load more cat facts",
+    "swipe":"Swipe in any direction"
 }

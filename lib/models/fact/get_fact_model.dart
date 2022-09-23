@@ -1,30 +1,14 @@
-class BlocFact {}
+import 'package:cats_fact/constants/app_strings.dart';
 
-class ModelFact {
+class CardModel {
+  final String date;
   final String image;
-  final String data;
   final String fact;
-  final bool isLoading;
-
-  ModelFact._({
-    this.data = '',
-    this.fact = '',
-    this.image = 'https://cataas.com/cat',
-    this.isLoading = true,
+  final int id;
+  CardModel({
+    this.date = AppStrings.empty,
+    this.image = AppStrings.ulrCatFull,
+    this.fact = AppStrings.empty,
+    this.id = 1,
   });
-
-  ModelFact.initial() : this._();
-
-  ModelFact.loading() : this._();
-
-  ModelFact.loaded({
-    required String data,
-    required String fact,
-    required String image,
-  }) : this._(
-          data: data,
-          fact: fact,
-          image: image,
-          isLoading: false,
-        );
 }

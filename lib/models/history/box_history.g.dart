@@ -19,17 +19,20 @@ class SavedHistoryAdapter extends TypeAdapter<SavedHistory> {
     return SavedHistory(
       date: fields[0] as String,
       fact: fields[1] as String,
+      id: fields[2] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, SavedHistory obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.date)
       ..writeByte(1)
-      ..write(obj.fact);
+      ..write(obj.fact)
+      ..writeByte(2)
+      ..write(obj.id);
   }
 
   @override
