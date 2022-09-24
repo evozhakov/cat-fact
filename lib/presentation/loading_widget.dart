@@ -26,7 +26,7 @@ class LoadingWidget extends StatelessWidget {
                     IconButton(
                       onPressed: () {
                         BlocProvider.of<FactBloc>(context).add(
-                          FactEvent(),
+                          MoreEvent(),
                         );
                       },
                       icon: const Icon(

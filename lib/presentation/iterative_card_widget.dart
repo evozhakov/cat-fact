@@ -49,7 +49,7 @@ class IterativeCard extends StatelessWidget {
                 },
               ),
               IconButton(
-                onPressed: () => factRepository.saveFact(catFact),
+                onPressed: () => hiveRepository.saveFact(catFact),
                 icon: const Icon(
                   Icons.save,
                   color: AppColors.color2,

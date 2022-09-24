@@ -1,6 +1,8 @@
-
 part of 'fact_bloc.dart';
 
-
 @immutable
-class FactEvent {}
+abstract class FactEvent {}
+
+class FirstEvent extends FactEvent {}
+
+class MoreEvent extends FactEvent {}

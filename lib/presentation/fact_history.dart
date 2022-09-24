@@ -12,7 +12,7 @@ class FactHistory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<SavedHistory> history = factRepository.factHistory;
+    List<SavedHistory> history = hiveRepository.history();
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Column(

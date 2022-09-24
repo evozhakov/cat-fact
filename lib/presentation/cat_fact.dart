@@ -1,3 +1,4 @@
+import 'package:cats_fact/repository/hive_box_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -5,6 +6,7 @@ import 'package:appinio_swiper/appinio_swiper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:cats_fact/bloc_fact/fact_bloc.dart';
+import 'package:cats_fact/repository/card_repository.dart';
 import 'package:cats_fact/constants/app_colors.dart';
 import 'package:cats_fact/presentation/fact_history.dart';
 import 'package:cats_fact/presentation/loading_widget.dart';
@@ -18,11 +20,11 @@ class CatFacts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AppinioSwiperController controller = AppinioSwiperController();
+    AppinioSwiperController controller = AppinioSwiperController();
     return BlocProvider<FactBloc>(
       create: (context) => FactBloc(controller, context)
         ..add(
-          FactEvent(),
+          FirstEvent(),
         ),
       child: Scaffold(
         appBar: AppBar(
@@ -58,9 +60,9 @@ class CatFacts extends StatelessWidget {
                   child: AppinioSwiper(
                     unlimitedUnswipe: true,
                     controller: controller,
-                    unswipe: controller.unswipe,
+                    unswipe: cardRrepository.unswipe,
                     cards: state,
-                    onSwipe: factRepository.swipe,
+                    onSwipe: cardRrepository.swipe,
                     padding: const EdgeInsets.only(
                       left: 25,
                       right: 25,
@@ -79,3 +81,5 @@ class CatFacts extends StatelessWidget {
 }
 
 FactRepository factRepository = FactRepository();
+CardRepository cardRrepository = CardRepository();
+HiveRepository hiveRepository = HiveRepository();

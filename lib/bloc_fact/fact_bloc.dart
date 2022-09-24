@@ -8,27 +8,28 @@ import 'package:cats_fact/presentation/swipe_card.dart';
 part 'fact_event.dart';
 
 class FactBloc extends Bloc<FactEvent, List<SwipeCard>> {
-  FactBloc(
-    AppinioSwiperController controler,
-    BuildContext context,
-  ) : super([]) {
-    on(
-      (event, emit) async {
+  AppinioSwiperController controller;
+  BuildContext context;
+  FactBloc(this.controller, this.context) : super([]) {
+    on<FirstEvent>(
+      (FirstEvent event, Emitter<List<SwipeCard>> emit) async {
+        await factRepository.emitCard(
+          context: context,
+          emit: emit,
+          isFirs: true,
+        );
+      },
+    );
+    on<MoreEvent>(
+      (MoreEvent event, Emitter<List<SwipeCard>> emit) async {
         factRepository.cards.clear();
         factRepository.catFacts.clear();
         emit([]);
-
-        await factRepository
-            .addCards(context)
-            .whenComplete(
-              () => factRepository.loadCards(),
-            )
-            .whenComplete(
-              () => emit(factRepository.cards),
-            )
-            .whenComplete(
-              () => controler.swipe(),
-            );
+        await factRepository.emitCard(
+          context: context,
+          emit: emit,
+          isFirs: false,
+        );
       },
     );
   }
