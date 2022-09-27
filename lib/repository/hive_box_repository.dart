@@ -1,9 +1,10 @@
-import 'package:cats_fact/models/fact/get_fact_model.dart';
-import 'package:cats_fact/models/history/box_history.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+part of 'repository_imports.dart';
 
 class HiveRepository {
-  Box<SavedHistory> box = Hive.box<SavedHistory>('history');
+  Box<SavedHistory> box = Hive.box<SavedHistory>(
+    HiveBox.history.toString(),
+  );
+
   Future<void> saveFact(CardModel fact) async {
     SavedHistory save = SavedHistory(
       date: fact.date,
@@ -15,16 +16,35 @@ class HiveRepository {
             fact.id.toString(),
           ),
     );
+
     !isContains
-        ? box.add(
+        ? box.put(
+            fact.id,
             save,
           )
         : null;
   }
 
+  void clearBox() {
+    box.clear();
+    cardRrepository.swipeSaveEvent();
+  }
+
   List<SavedHistory> history() {
-    Hive.openBox<SavedHistory>('history');
+    Hive.openBox<SavedHistory>(
+      HiveBox.history.toString(),
+    );
     List<SavedHistory> factHistory = box.values.toList();
     return factHistory;
   }
+
+  void removeFact(CardModel fact) {
+    box.delete(
+      fact.id,
+    );
+  }
+}
+
+enum HiveBox {
+  history,
 }

@@ -1,33 +1,58 @@
-import 'dart:developer';
-import 'package:cats_fact/presentation/swipe_card.dart';
-
-import 'package:appinio_swiper/appinio_swiper.dart';
-import 'package:cats_fact/constants/app_strings.dart';
-import 'package:cats_fact/models/fact/get_fact_model.dart';
-import 'package:cats_fact/presentation/cat_fact.dart';
+part of 'repository_imports.dart';
 
 class CardRepository {
+  Function swipeSaveEvent = () {};
+
+  void event({
+    required Emitter<SaveState> emit,
+    required SaveEvent event,
+  }) {
+    event.isDislike
+        ? event.isSave
+            ? hiveRepository.saveFact(event.cardModel)
+            : hiveRepository.removeFact(event.cardModel)
+        : null;
+    emit(
+      SaveState(
+        isSave: event.isSave,
+      ),
+    );
+  }
+
+  void saveEvent({
+    required BuildContext context,
+    required CardModel cardModel,
+    bool isDislike = false,
+    bool isSave = false,
+  }) =>
+      BlocProvider.of<SaveBloc>(context).add(
+        SaveEvent(
+          cardModel: cardModel,
+          isDislike: isDislike,
+          isSave: isSave,
+        ),
+      );
+
   void swipe(
     int index,
     AppinioSwiperDirection direction,
   ) {
-    log(
+    dev.log(
       AppStrings.swiped + direction.name,
     );
+    swipeSaveEvent();
   }
 
   void unswipe(
     bool unswiped,
   ) {
-    if (unswiped) {
-      log(
-        AppStrings.success,
-      );
-    } else {
-      log(
-        AppStrings.fail,
-      );
-    }
+    unswiped
+        ? dev.log(
+            AppStrings.success,
+          )
+        : dev.log(
+            AppStrings.fail,
+          );
   }
 
   Future<void> loadCards() async {
@@ -39,5 +64,23 @@ class CardRepository {
       );
     }
   }
+
+  void showBar(
+    BuildContext context,
+    Pages page,
+  ) {
+    Navigator.of(context).pop();
+    showBarModalBottomSheet(
+      expand: true,
+      context: context,
+      backgroundColor: AppColors.color2,
+      builder: (context) =>
+          page == Pages.history ? const FactHistory() : const Settings(),
+    );
+  }
 }
 
+enum Pages {
+  settings,
+  history,
+}

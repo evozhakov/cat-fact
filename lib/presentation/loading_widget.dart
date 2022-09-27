@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:cats_fact/bloc_fact/fact_bloc.dart';
-import 'package:cats_fact/constants/app_colors.dart';
-import 'package:cats_fact/presentation/swipe_card.dart';
+import 'package:cats_fact/blocs/bloc_fact/fact_bloc.dart';
+
+
+
 
 class LoadingWidget extends StatelessWidget {
   const LoadingWidget({
@@ -13,10 +14,10 @@ class LoadingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FactBloc, List<SwipeCard>>(
+    return BlocBuilder<FactBloc, FactState>(
       builder: (context, state) {
         return Center(
-          child: state.isNotEmpty
+          child: state.swipeCard.isNotEmpty
               ? Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -26,12 +27,12 @@ class LoadingWidget extends StatelessWidget {
                     IconButton(
                       onPressed: () {
                         BlocProvider.of<FactBloc>(context).add(
-                          MoreEvent(),
+                          MoreLoadEvent(),
                         );
                       },
                       icon: const Icon(
                         Icons.rotate_left_rounded,
-                        color: AppColors.color1,
+                      
                         size: 40,
                       ),
                     ),

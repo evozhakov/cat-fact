@@ -1,8 +1,9 @@
 {
     "titleHistory": "Fact history",
     "fact": "Fact",
-    "more":"Another fact!",
     "localLan": "en",
     "loadCard": "Load more cat facts",
-    "swipe":"Swipe in any direction"
+    "swipe":"Swipe in any direction",
+    "settings":"Settings",
+    "clear":"Сlear fact history"
 }

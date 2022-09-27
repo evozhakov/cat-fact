@@ -1,17 +1,6 @@
-import 'dart:math';
+part of 'repository_imports.dart';
 
-import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:translator/translator.dart';
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:cats_fact/presentation/cat_fact.dart';
-import 'package:cats_fact/constants/app_strings.dart';
-import 'package:cats_fact/models/fact/fact_model.dart';
-import 'package:cats_fact/models/fact/get_fact_model.dart';
-import 'package:cats_fact/models/image/image_model.dart';
-import 'package:cats_fact/presentation/swipe_card.dart';
 
 class FactRepository {
   List<SwipeCard> cards = [];
@@ -20,7 +9,11 @@ class FactRepository {
   final Dio dio = Dio();
   final DateTime now = DateTime.now();
 
-  Future<void> emitCard({context, isFirs, emit}) async {
+  Future<void> emitCards({
+    required BuildContext context,
+    required bool isFirs,
+    required Emitter<FactState> emit,
+  }) async {
     await addCards(
       context,
       isFirs,
@@ -30,7 +23,7 @@ class FactRepository {
         )
         .whenComplete(
           () => emit(
-            cards,
+            FactState(swipeCard: cards),
           ),
         );
   }
@@ -56,7 +49,7 @@ class FactRepository {
     }
     isFirs
         ? catFacts.add(
-            CardModel(),
+            const CardModel(),
           )
         : null;
   }
