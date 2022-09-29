@@ -1,18 +1,17 @@
+import 'package:cats_fact/models/fact_model.dart';
+import 'package:cats_fact/repository/repository_imports.dart';
 import 'package:flutter/material.dart';
-import 'package:appinio_swiper/appinio_swiper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:cats_fact/presentation/card_fact/cat_fact.dart';
 import 'package:cats_fact/presentation/card_fact/swipe_card.dart';
 
 part 'fact_event.dart';
 part 'fact_state.dart';
 
 class FactBloc extends Bloc<FactEvent, FactState> {
-  AppinioSwiperController controller;
-  BuildContext context;
+  final BuildContext context;
 
-  FactBloc(this.controller, this.context)
+  FactBloc(this.context)
       : super(
           const FactState(),
         ) {
@@ -21,10 +20,21 @@ class FactBloc extends Bloc<FactEvent, FactState> {
         FirstLoadEvent event,
         Emitter<FactState> emit,
       ) async {
-        await factRepository.emitCards(
+        await factRepository
+            .emitCards(
           context: context,
           emit: emit,
           isFirs: true,
+        )
+            .whenComplete(
+          () async {
+            for (int i = 1; i <= 2; i++) {
+              await factRepository.emitForAnimation(
+                emit: emit,
+                state: state,
+              );
+            }
+          },
         );
       },
     );
@@ -34,8 +44,6 @@ class FactBloc extends Bloc<FactEvent, FactState> {
         MoreLoadEvent event,
         Emitter<FactState> emit,
       ) async {
-        factRepository.cards.clear();
-        factRepository.catFacts.clear();
         emit(
           const FactState(),
         );
@@ -43,6 +51,18 @@ class FactBloc extends Bloc<FactEvent, FactState> {
           context: context,
           emit: emit,
           isFirs: false,
+        );
+      },
+    );
+    on<SaveFactEvent>(
+      (
+        SaveFactEvent event,
+        Emitter<FactState> emit,
+      ) {
+        cardRrepository.save(
+          state: state,
+          emit: emit,
+          event: event,
         );
       },
     );

@@ -19,7 +19,7 @@ class SavedHistoryAdapter extends TypeAdapter<SavedHistory> {
     return SavedHistory(
       date: fields[0] as String,
       fact: fields[1] as String,
-      id: fields[2] as int,
+      id: fields[2] as String,
     );
   }
 

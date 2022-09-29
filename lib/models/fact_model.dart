@@ -1,14 +1,14 @@
 import 'package:cats_fact/constants/app_strings.dart';
 
-class CardModel {
+class FactModel {
   final String date;
   final String image;
   final String fact;
-  final int id;
-  const CardModel({
+  final String id;
+  const FactModel({
     this.date = AppStrings.empty,
     this.image = AppStrings.ulrCatFull,
     this.fact = AppStrings.empty,
-    this.id = 1,
+    this.id = AppStrings.empty,
   });
 }

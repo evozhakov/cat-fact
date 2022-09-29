@@ -6,7 +6,7 @@ import 'package:cats_fact/constants/app_colors.dart';
 import 'package:cats_fact/models/fact_model.dart';
 
 class IterativeCard extends StatelessWidget {
-  final CardModel catFact;
+  final FactModel catFact;
   const IterativeCard({
     super.key,
     required this.catFact,

@@ -14,7 +14,7 @@ class SavedHistory{
   @HiveField(1)
   String fact;
   @HiveField(2)
-  int id;
+  String id;
 
 
 

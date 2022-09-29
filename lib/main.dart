@@ -1,4 +1,3 @@
-import 'package:cats_fact/repository/repository_imports.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -12,9 +11,7 @@ void main() async {
   Hive.registerAdapter(
     SavedHistoryAdapter(),
   );
-  await Hive.openBox<SavedHistory>(
-    HiveBox.history.toString(),
-  );
+  await Hive.openBox<SavedHistory>('history');
 
   runApp(const CatFact());
 }

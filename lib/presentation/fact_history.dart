@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:cats_fact/constants/app_colors.dart';
+import 'package:cats_fact/repository/repository_imports.dart';
 import 'package:cats_fact/models/history/box_history.dart';
-import 'package:cats_fact/presentation/card_fact/cat_fact.dart';
 
 class FactHistory extends StatelessWidget {
   const FactHistory({
@@ -24,10 +24,7 @@ class FactHistory extends StatelessWidget {
         padding: const EdgeInsets.all(10.0),
         child: ListView.builder(
           itemCount: history.length,
-          itemBuilder: ((
-            BuildContext context,
-            index,
-          ) {
+          itemBuilder: ((context, index) {
             return Card(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),

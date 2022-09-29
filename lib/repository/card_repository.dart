@@ -1,38 +1,6 @@
 part of 'repository_imports.dart';
 
 class CardRepository {
-  Function swipeSaveEvent = () {};
-
-  void event({
-    required Emitter<SaveState> emit,
-    required SaveEvent event,
-  }) {
-    event.isDislike
-        ? event.isSave
-            ? hiveRepository.saveFact(event.cardModel)
-            : hiveRepository.removeFact(event.cardModel)
-        : null;
-    emit(
-      SaveState(
-        isSave: event.isSave,
-      ),
-    );
-  }
-
-  void saveEvent({
-    required BuildContext context,
-    required CardModel cardModel,
-    bool isDislike = false,
-    bool isSave = false,
-  }) =>
-      BlocProvider.of<SaveBloc>(context).add(
-        SaveEvent(
-          cardModel: cardModel,
-          isDislike: isDislike,
-          isSave: isSave,
-        ),
-      );
-
   void swipe(
     int index,
     AppinioSwiperDirection direction,
@@ -40,7 +8,6 @@ class CardRepository {
     dev.log(
       AppStrings.swiped + direction.name,
     );
-    swipeSaveEvent();
   }
 
   void unswipe(
@@ -55,13 +22,24 @@ class CardRepository {
           );
   }
 
-  Future<void> loadCards() async {
-    for (CardModel catFact in factRepository.catFacts) {
+  Future<void> loadCards(
+    bool isFirs,
+  ) async {
+    for (FactModel catFact in factRepository.catFacts) {
       factRepository.cards.add(
         SwipeCard(
           catFact: catFact,
         ),
       );
+    }
+    if (isFirs) {
+      for (FactModel catFact in factRepository.emptyFact) {
+        factRepository.firstCard.add(
+          SwipeCard(
+            catFact: catFact,
+          ),
+        );
+      }
     }
   }
 
@@ -74,8 +52,24 @@ class CardRepository {
       expand: true,
       context: context,
       backgroundColor: AppColors.color2,
-      builder: (context) =>
+      builder: (BuildContext context) =>
           page == Pages.history ? const FactHistory() : const Settings(),
+    );
+  }
+
+  void save({
+    required FactState state,
+    required Emitter<FactState> emit,
+    required SaveFactEvent event,
+  }) {
+    !hiveRepository.isContains(event.fact)
+        ? hiveRepository.saveFact(event.fact)
+        : hiveRepository.removeFact(event.fact);
+    emit(
+      FactState(
+        swipeCard: state.swipeCard,
+        isSave: !state.isSave,
+      ),
     );
   }
 }

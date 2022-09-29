@@ -1,13 +1,14 @@
 part of 'repository_imports.dart';
 
-
-
 class FactRepository {
   List<SwipeCard> cards = [];
-  List<CardModel> catFacts = [];
-  final translator = GoogleTranslator();
-  final Dio dio = Dio();
-  final DateTime now = DateTime.now();
+  List<SwipeCard> firstCard = [];
+  List<FactModel> catFacts = [];
+  List<FactModel> emptyFact = [];
+  final _translator = GoogleTranslator();
+  final Dio _dio = Dio();
+
+  final Duration _duration = const Duration(milliseconds: 500);
 
   Future<void> emitCards({
     required BuildContext context,
@@ -19,27 +20,59 @@ class FactRepository {
       isFirs,
     )
         .whenComplete(
-          () => cardRrepository.loadCards(),
+          () => cardRrepository.loadCards(
+            isFirs,
+          ),
         )
         .whenComplete(
           () => emit(
-            FactState(swipeCard: cards),
+            FactState(
+              swipeCard: cards,
+              firstSwipeCard: firstCard,
+            ),
           ),
         );
   }
 
-  Future<void> addCards(context, bool isFirs) async {
+  Future<void> emitForAnimation({
+    required Emitter<FactState> emit,
+    required FactState state,
+  }) async {
+    await Future.delayed(
+      _duration,
+    ).whenComplete(
+      () => emit(
+        FactState(
+            swipeCard: state.swipeCard,
+            animation: !state.animation,
+            firstSwipeCard: state.firstSwipeCard),
+      ),
+    );
+  }
+
+  Future<void> addCards(
+    context,
+    bool isFirs,
+  ) async {
+    isFirs
+        ? emptyFact.add(
+            const FactModel(),
+          )
+        : {
+            factRepository.cards.clear(),
+            factRepository.catFacts.clear(),
+          };
     for (int i = 1; i <= 5; i++) {
-      final image = await getImage();
-      final fact = await getFact(context);
-      final date = DateFormat('y/M/d HH:mm')
+      String image = await getImage();
+      String fact = await getFact(context);
+      String date = DateFormat('y/M/d HH:mm')
           .format(
-            now,
+            DateTime.now(),
           )
           .toString();
-      final id = Random().nextInt(10000);
+      String id = Random().nextInt(10000).toString();
       catFacts.add(
-        CardModel(
+        FactModel(
           date: date,
           fact: fact,
           image: image,
@@ -47,22 +80,17 @@ class FactRepository {
         ),
       );
     }
-    isFirs
-        ? catFacts.add(
-            const CardModel(),
-          )
-        : null;
   }
 
   Future<String> getFact(BuildContext context) async {
     final lang = AppLocalizations.of(context)!.localLan;
-    final factEn = await RestFact(dio).getFact();
-    final fact = await translator.translate(factEn.fact!, to: lang);
+    final factEn = await RestFact(_dio).getFact();
+    final fact = await _translator.translate(factEn.fact!, to: lang);
     return fact.text;
   }
 
   Future<String> getImage() async {
-    final idImage = await RestImage(dio).getImage();
+    final idImage = await RestImage(_dio).getImage();
     final ulrImage = AppStrings.baseUrlImage + idImage.url.toString();
     return ulrImage;
   }

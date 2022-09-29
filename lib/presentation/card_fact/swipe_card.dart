@@ -7,7 +7,7 @@ import 'package:cats_fact/presentation/card_fact/first_card_widget.dart';
 import 'package:cats_fact/presentation/card_fact/iterative_card_widget.dart';
 
 class SwipeCard extends StatelessWidget {
-  final CardModel catFact;
+  final FactModel catFact;
 
   const SwipeCard({
     required this.catFact,

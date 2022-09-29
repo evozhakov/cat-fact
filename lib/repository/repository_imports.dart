@@ -1,4 +1,5 @@
 //packages
+import 'dart:async';
 import 'dart:developer' as dev;
 import 'dart:math';
 
@@ -12,8 +13,7 @@ import 'package:translator/translator.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 //lib
-import 'package:cats_fact/blocs/bloc_save/save_bloc.dart';
-import 'package:cats_fact/presentation/card_fact/cat_fact.dart';
+
 import 'package:cats_fact/presentation/card_fact/swipe_card.dart';
 import 'package:cats_fact/presentation/fact_history.dart';
 import 'package:cats_fact/presentation/settings.dart';
@@ -31,4 +31,6 @@ part 'card_repository.dart';
 part 'hive_box_repository.dart';
 part 'fact_repository.dart';
 
-
+FactRepository factRepository = FactRepository();
+CardRepository cardRrepository = CardRepository();
+HiveRepository hiveRepository = HiveRepository();

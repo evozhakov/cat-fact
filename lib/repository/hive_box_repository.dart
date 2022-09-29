@@ -1,50 +1,45 @@
 part of 'repository_imports.dart';
 
 class HiveRepository {
-  Box<SavedHistory> box = Hive.box<SavedHistory>(
-    HiveBox.history.toString(),
-  );
+  final Box<SavedHistory> _box = Hive.box<SavedHistory>('history');
 
-  Future<void> saveFact(CardModel fact) async {
+  Future<void> saveFact(FactModel fact) async {
     SavedHistory save = SavedHistory(
       date: fact.date,
       fact: fact.fact,
       id: fact.id,
     );
-    bool isContains = box.values.any(
-      (element) => element.id.toString().contains(
-            fact.id.toString(),
-          ),
-    );
 
-    !isContains
-        ? box.put(
+    !isContains(fact)
+        ? _box.put(
             fact.id,
             save,
           )
         : null;
   }
 
+  bool isContains(FactModel fact) {
+    bool isContains = _box.values.any(
+      (element) => element.id.contains(
+        fact.id,
+      ),
+    );
+    return isContains;
+  }
+
   void clearBox() {
-    box.clear();
-    cardRrepository.swipeSaveEvent();
+    _box.clear();
   }
 
   List<SavedHistory> history() {
-    Hive.openBox<SavedHistory>(
-      HiveBox.history.toString(),
-    );
-    List<SavedHistory> factHistory = box.values.toList();
+    Hive.openBox<SavedHistory>('history');
+    List<SavedHistory> factHistory = _box.values.toList();
     return factHistory;
   }
 
-  void removeFact(CardModel fact) {
-    box.delete(
+  void removeFact(FactModel fact) {
+    _box.delete(
       fact.id,
     );
   }
-}
-
-enum HiveBox {
-  history,
 }
