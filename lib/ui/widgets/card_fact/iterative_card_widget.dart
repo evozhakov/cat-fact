@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:cats_fact/presentation/card_fact/random_image_widget.dart';
-import 'package:cats_fact/constants/app_colors.dart';
-import 'package:cats_fact/models/fact_model.dart';
+import 'package:cats_fact/ui/widgets/card_fact/random_image_widget.dart';
+import 'package:cats_fact/models/fact/fact_model.dart';
 
 class IterativeCard extends StatelessWidget {
   final FactModel catFact;
@@ -32,7 +31,7 @@ class IterativeCard extends StatelessWidget {
         Text(
           catFact.date,
           style: const TextStyle(
-            color: AppColors.color3,
+            color: Colors.grey,
           ),
         ),
         Expanded(

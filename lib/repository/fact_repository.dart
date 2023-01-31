@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 part of 'repository_imports.dart';
 
 class FactRepository {
@@ -18,13 +20,7 @@ class FactRepository {
     await addCards(
       context,
       isFirs,
-    )
-        .whenComplete(
-          () => cardRrepository.loadCards(
-            isFirs,
-          ),
-        )
-        .whenComplete(
+    ).whenComplete(() => cardRrepository.loadCards(isFirs)).whenComplete(
           () => emit(
             FactState(
               swipeCard: cards,
@@ -38,9 +34,7 @@ class FactRepository {
     required Emitter<FactState> emit,
     required FactState state,
   }) async {
-    await Future.delayed(
-      _duration,
-    ).whenComplete(
+    await Future.delayed(_duration).whenComplete(
       () => emit(
         FactState(
             swipeCard: state.swipeCard,
@@ -50,26 +44,19 @@ class FactRepository {
     );
   }
 
-  Future<void> addCards(
-    context,
-    bool isFirs,
-  ) async {
+  Future<void> addCards(BuildContext context, bool isFirs) async {
+    final int count = context.read<ServiceBloc>().state.countFact;
+
     isFirs
-        ? emptyFact.add(
-            const FactModel(),
-          )
+        ? emptyFact.add(const FactModel())
         : {
             factRepository.cards.clear(),
             factRepository.catFacts.clear(),
           };
-    for (int i = 1; i <= 5; i++) {
+    for (int i = 1; i <= count; i++) {
       String image = await getImage();
       String fact = await getFact(context);
-      String date = DateFormat('y/M/d HH:mm')
-          .format(
-            DateTime.now(),
-          )
-          .toString();
+      String date = DateFormat('y/M/d HH:mm').format(DateTime.now()).toString();
       String id = Random().nextInt(10000).toString();
       catFacts.add(
         FactModel(

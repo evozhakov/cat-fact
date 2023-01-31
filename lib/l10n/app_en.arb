@@ -4,5 +4,11 @@
     "localLan": "en",
     "swipe":"Swipe in any direction",
     "settings":"Settings",
-    "clear":"Сlear fact history"
+    "clear":"Сlear fact history",
+    "noFacts":"There are no saved facts",
+    "factsRemoved":"All facts removed",
+    "cancel":"Сancel",
+    "facts":"Facts",
+    "numberCards":"Number of generated cards",
+    "factDeleted":"Fact deleted"
 }

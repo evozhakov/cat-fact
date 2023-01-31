@@ -4,5 +4,11 @@
     "localLan": "fr",
     "swipe":"Balayez dans n'importe quelle direction",
     "settings":"Réglages",
-    "clear":"Histoire claire des faits"
+    "clear":"Histoire claire des faits",
+    "noFacts":"Il n'y a pas de faits enregistrés",
+    "factsRemoved":"Tous les faits supprimés",
+    "cancel":"Annuler",
+    "facts":"Faits",
+    "numberCards":"Nombre de cartes générées",
+    "factDeleted":"Fait supprimé"
 }

@@ -1,45 +1,54 @@
 part of 'repository_imports.dart';
 
-class HiveRepository {
+class HiveFactRepository {
   final Box<SavedHistory> _box = Hive.box<SavedHistory>('history');
 
-  Future<void> saveFact(FactModel fact) async {
-    SavedHistory save = SavedHistory(
-      date: fact.date,
-      fact: fact.fact,
-      id: fact.id,
-    );
+  ValueListenable<Box<SavedHistory>> get boxHistory => _box.listenable();
 
-    !isContains(fact)
-        ? _box.put(
-            fact.id,
-            save,
-          )
-        : null;
-  }
-
-  bool isContains(FactModel fact) {
-    bool isContains = _box.values.any(
-      (element) => element.id.contains(
+  void onTapIconSave(FactModel fact, bool isContains) {
+    if (isContains) {
+      _box.delete(
         fact.id,
-      ),
-    );
-    return isContains;
+      );
+    } else {
+      final history = SavedHistory.fromFact(fact);
+
+      _box.put(
+        fact.id,
+        history,
+      );
+    }
   }
 
-  void clearBox() {
-    _box.clear();
-  }
-
-  List<SavedHistory> history() {
-    Hive.openBox<SavedHistory>('history');
-    List<SavedHistory> factHistory = _box.values.toList();
-    return factHistory;
-  }
-
-  void removeFact(FactModel fact) {
+  void removeFact(SavedHistory history, AppLocalizations text) {
     _box.delete(
-      fact.id,
+      history.id,
     );
+    Utils.showSnackBar(
+      text.factDeleted,
+      labelButton: text.cancel,
+      onTap: () {
+        _box.put(history.id, history);
+      },
+    );
+  }
+
+  void clearBox(AppLocalizations text) {
+    final values = _box.values.toList();
+    if (values.isEmpty) {
+      Utils.showSnackBar(text.noFacts);
+    } else {
+      _box.clear();
+
+      Utils.showSnackBar(
+        text.factsRemoved,
+        labelButton: text.cancel,
+        onTap: () {
+          for (SavedHistory history in values) {
+            _box.put(history.id, history);
+          }
+        },
+      );
+    }
   }
 }

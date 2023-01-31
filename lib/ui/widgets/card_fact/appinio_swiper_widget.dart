@@ -2,19 +2,18 @@ import 'package:appinio_swiper/appinio_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:cats_fact/presentation/card_fact/swipe_card.dart';
+import 'package:cats_fact/ui/widgets/card_fact/swipe_card.dart';
 import 'package:cats_fact/repository/repository_imports.dart';
 import 'package:cats_fact/blocs/bloc_fact/fact_bloc.dart';
 
 class AppinioSwiperWidget extends StatelessWidget {
-  final FactState state;
   const AppinioSwiperWidget({
     super.key,
-    required this.state,
   });
 
   @override
   Widget build(BuildContext context) {
+    final state = context.watch<FactBloc>().state;
     return Stack(
       children: [
         _appinioSwiper(

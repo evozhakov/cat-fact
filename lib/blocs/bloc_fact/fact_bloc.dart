@@ -1,9 +1,8 @@
-import 'package:cats_fact/models/fact_model.dart';
-import 'package:cats_fact/repository/repository_imports.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:cats_fact/presentation/card_fact/swipe_card.dart';
+import 'package:cats_fact/ui/widgets/card_fact/swipe_card.dart';
+import 'package:cats_fact/repository/repository_imports.dart';
 
 part 'fact_event.dart';
 part 'fact_state.dart';
@@ -51,18 +50,6 @@ class FactBloc extends Bloc<FactEvent, FactState> {
           context: context,
           emit: emit,
           isFirs: false,
-        );
-      },
-    );
-    on<SaveFactEvent>(
-      (
-        SaveFactEvent event,
-        Emitter<FactState> emit,
-      ) {
-        cardRrepository.save(
-          state: state,
-          emit: emit,
-          event: event,
         );
       },
     );

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:cats_fact/constants/app_strings.dart';
-import 'package:cats_fact/constants/app_colors.dart';
-import 'package:cats_fact/models/fact_model.dart';
-import 'package:cats_fact/presentation/card_fact/first_card_widget.dart';
-import 'package:cats_fact/presentation/card_fact/iterative_card_widget.dart';
+import 'package:cats_fact/models/fact/fact_model.dart';
+import 'package:cats_fact/ui/widgets/card_fact/first_card_widget.dart';
+import 'package:cats_fact/ui/widgets/card_fact/iterative_card_widget.dart';
 
 class SwipeCard extends StatelessWidget {
   final FactModel catFact;
@@ -19,10 +18,10 @@ class SwipeCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
-        color: AppColors.color2,
+        color: Colors.white,
         boxShadow: const [
           BoxShadow(
-            color: AppColors.color3,
+            color: Colors.grey,
             blurRadius: 7,
           )
         ],
