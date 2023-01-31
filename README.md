@@ -1,6 +1,6 @@
 # Cat Facts
 
-A simple app that displays flashcards that contain a random [image](https://cataas.com) and a text [fact](https://catfact.ninja').
+A simple app that displays flashcards that contain a random [image](https://cataas.com) and a text [fact](https://catfact.ninja).
 
 - [Download the apk file for Android.](https://drive.google.com/file/d/1Q-KZp6UzTeVygifl_dYa1eJD9HCceP5W/view?usp=share_link)
 - [Watch a short video.](https://drive.google.com/file/d/17JP4I-tzNFGHGvXMxvE5mbrWJJj0jbtq/view?usp=share_link)
