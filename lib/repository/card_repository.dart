@@ -7,8 +7,9 @@ class CardRepository {
   void unswipe(bool unswiped) =>
       unswiped ? dev.log(AppStrings.success) : dev.log(AppStrings.fail);
 
-  void shareFact(FactModel fact) {
-    Share.share('${fact.fact} ${fact.image}');
+  void shareFact(FactModel? fact, String? ulrImage) {
+    final text = fact != null ? '${fact.fact} ${fact.image}' : ulrImage!;
+    Share.share(text);
   }
 
   Future<void> loadCards(bool isFirs) async {

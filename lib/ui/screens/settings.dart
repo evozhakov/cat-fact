@@ -1,4 +1,7 @@
+import 'package:cats_fact/blocs/bloc_service/service_bloc.dart';
+import 'package:cats_fact/constants/app_strings.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:cats_fact/repository/repository_imports.dart';
@@ -24,6 +27,12 @@ class Settings extends StatelessWidget {
         icon: Icons.clear,
       ),
     ];
+    final languageSettings = [
+      const SettingsItemModel(
+        title: 'language',
+        trailing: LanguageDropDown(),
+      ) //to local
+    ];
 
     return Scaffold(
       appBar: AppBar(
@@ -35,22 +44,37 @@ class Settings extends StatelessWidget {
         padding: const EdgeInsets.all(10.0),
         child: ListView(
           children: [
-            _title(text.facts),
             SettingsItems(factSettings),
+            SettingsItems(languageSettings),
           ],
         ),
       ),
     );
   }
+}
 
-  Widget _title(String title) {
-    return Text(
-      title,
-      textAlign: TextAlign.center,
-      style: const TextStyle(
-        fontSize: 21,
-        fontWeight: FontWeight.w500,
-      ),
+class LanguageDropDown extends StatelessWidget {
+  const LanguageDropDown({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final locale = context.select((ServiceBloc bloc) => bloc.state.locale);
+    return DropdownButton(
+      value: locale,
+      onChanged: (value) => settingsRepository.changeLanguage(context, value!),
+      items: AppStrings.localeList
+          .map(
+            (e) => DropdownMenuItem<String>(
+              value: e.languageCode,
+              child: Text(
+                e.languageName,
+                style: const TextStyle(
+                  fontSize: 20,
+                ),
+              ),
+            ),
+          )
+          .toList(),
     );
   }
 }

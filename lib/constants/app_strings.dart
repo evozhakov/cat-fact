@@ -1,3 +1,5 @@
+import 'package:cats_fact/models/settings/locale_model.dart';
+
 class AppStrings {
   static const String ulrCatFull = 'https://cataas.com/cat';
   static const String baseUrlFact = 'https://catfact.ninja';
@@ -6,6 +8,12 @@ class AppStrings {
   static const String success = 'SUCCESS: card was unswiped';
   static const String fail = 'FAIL: no card left to unswipe';
   static const String swiped = 'the card was swiped to the:';
+  static const List<LocaleModel> localeList = [
+    LocaleModel('English', 'en'),
+    LocaleModel('Українська', 'uk'),
+    LocaleModel('Français', 'fr'),
+    LocaleModel('עִברִית', 'iw'),
+  ];
   static const List<int> listInt = [
     1,
     2,

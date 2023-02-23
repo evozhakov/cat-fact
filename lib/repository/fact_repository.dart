@@ -54,7 +54,7 @@ class FactRepository {
             factRepository.catFacts.clear(),
           };
     for (int i = 1; i <= count; i++) {
-      String image = await getImage();
+      String image = await getImage(context);
       String fact = await getFact(context);
       String date = DateFormat('y/M/d HH:mm').format(DateTime.now()).toString();
       String id = Random().nextInt(10000).toString();
@@ -70,15 +70,76 @@ class FactRepository {
   }
 
   Future<String> getFact(BuildContext context) async {
-    final lang = AppLocalizations.of(context)!.localLan;
+    final locale = context.read<ServiceBloc>().state.locale;
     final factEn = await RestFact(_dio).getFact();
-    final fact = await _translator.translate(factEn.fact!, to: lang);
+    final fact = await _translator.translate(factEn.fact!, to: locale);
     return fact.text;
   }
 
-  Future<String> getImage() async {
-    final idImage = await RestImage(_dio).getImage();
-    final ulrImage = AppStrings.baseUrlImage + idImage.url.toString();
-    return ulrImage;
+  Future<String> getImage(BuildContext context) async {
+    final apiCataasWork = context.read<ServiceBloc>().state.apiCataasWork;
+
+    if (apiCataasWork) {
+      final image = await _mainImageSourse(context);
+      return image;
+    } else {
+      final image = await _alternativeImageSourse();
+      return image;
+    }
+  }
+
+  //refactor this code ⇩
+
+  Future<String> _mainImageSourse(BuildContext context) async {
+    try {
+      final responseData = await _dio.get('https://cataas.com/cat?json=true');
+
+      String url = jsonDecode(json.encode(responseData.data))["url"];
+
+      url = AppStrings.baseUrlImage + url;
+
+      return url;
+    } on DioError {
+      context.read<ServiceBloc>().add(CataasNotWorkEvent());
+      Utils.showSnackBar(
+          'https://cataas.com does not work trying to connect to alternative services, please wait'); //to local
+      final image = await _alternativeImageSourse();
+      return image;
+    }
+  }
+
+  Future<String> _alternativeImageSourse() async {
+    final responseData = await _dio.get('https://aws.random.cat/meow');
+
+    final ulr = jsonDecode(json.encode(responseData.data))["file"] as String;
+
+    return ulr;
+  }
+
+  Future<void> createImageWithText(BuildContext context,
+      TextEditingController controller, GlobalKey<FormState> key) async {
+    if (key.currentState!.validate()) {
+      final text = controller.text.trim();
+
+      final responseData =
+          await _dio.get('https://cataas.com/cat/says/$text?json=true');
+
+      String url = jsonDecode(json.encode(responseData.data))["url"];
+
+      url = AppStrings.baseUrlImage + url;
+
+      await showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
+            contentPadding: EdgeInsets.zero,
+            content: RandomImageWidget(ulr: url),
+          );
+        },
+      );
+    }
   }
 }

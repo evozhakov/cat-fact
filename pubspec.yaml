@@ -48,5 +48,5 @@ flutter:
   uses-material-design: true
   assets:
     - assets/46864-lovely-cats.json
-
-  # assets/4014-8344-cat-not-track-mouse.riv
+    - assets/91743-fat-cat-wants-to-chat.json
+    - assets/67834-ssssttt-shut-up-the-cat-is-sleeping (1).json

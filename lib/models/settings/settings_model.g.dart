@@ -18,15 +18,18 @@ class SettingsModelAdapter extends TypeAdapter<SettingsModel> {
     };
     return SettingsModel(
       countFact: fields[0] as int,
+      locale: fields[1] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, SettingsModel obj) {
     writer
-      ..writeByte(1)
+      ..writeByte(2)
       ..writeByte(0)
-      ..write(obj.countFact);
+      ..write(obj.countFact)
+      ..writeByte(1)
+      ..write(obj.locale);
   }
 
   @override

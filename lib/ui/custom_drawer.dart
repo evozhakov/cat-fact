@@ -16,9 +16,11 @@ class CustomDrawer extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: const [
+          DrawerButton(DrawerItems.catWithText),
+          SizedBox(height: 10),
           DrawerButton(DrawerItems.history),
           SizedBox(height: 10),
-          DrawerButton(DrawerItems.settings)
+          DrawerButton(DrawerItems.settings),
         ],
       ),
     );
