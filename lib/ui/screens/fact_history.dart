@@ -1,9 +1,9 @@
+import 'dart:developer';
+
+import 'package:cats_fact/repository/history_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:cats_fact/models/history/box_history.dart';
-import 'package:cats_fact/repository/repository_imports.dart';
 
 class FactHistory extends StatelessWidget {
   const FactHistory({
@@ -13,6 +13,7 @@ class FactHistory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final text = AppLocalizations.of(context)!;
+    final historyRepository = HistoryRepository();
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -21,16 +22,17 @@ class FactHistory extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
-        child: ValueListenableBuilder<Box<SavedHistory>>(
-          valueListenable: hiveFactRepository.boxHistory,
-          builder: (context, box, widget) {
-            final savedHistory = box.values.toList();
+        child: StreamBuilder(
+          stream: historyRepository.facts(),
+          builder: (context, facts) {
+            final savedHistory = facts.data ?? [];
             return ListView.builder(
               itemCount: savedHistory.length,
               itemBuilder: (context, index) {
                 final history = savedHistory[index];
                 return Dismissible(
-                  onDismissed: (dir) => hiveFactRepository.removeFact(history, text),
+                  onDismissed: (dir) =>
+                      historyRepository.removeFact(history, text),
                   key: Key(history.id),
                   child: Card(
                     child: Padding(

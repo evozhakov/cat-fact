@@ -27,6 +27,11 @@ dependencies:
   meta: ^1.8.0
   lottie: ^2.2.0
   share_plus: ^6.3.0
+  firebase_core: ^2.7.0
+  firebase_auth: ^4.2.9
+  google_sign_in: ^6.0.1
+  cloud_firestore: ^4.4.3
+  uuid: ^3.0.7
 
 dev_dependencies:
   hive_generator: ^1.1.3
@@ -50,3 +55,4 @@ flutter:
     - assets/46864-lovely-cats.json
     - assets/91743-fat-cat-wants-to-chat.json
     - assets/67834-ssssttt-shut-up-the-cat-is-sleeping (1).json
+    - assets/20894-lazy-cat.json

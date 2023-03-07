@@ -6,8 +6,10 @@ class ServiceState {
   final int countFact;
   final String locale;
   final bool apiCataasWork;
+  final User? currentUser;
 
   const ServiceState({
+    required this.currentUser,
     this.drawerIsOpen = false,
     required this.countFact,
     required this.locale,
@@ -15,6 +17,7 @@ class ServiceState {
   });
 
   Locale get localedFromSubtags => Locale.fromSubtags(languageCode: locale);
+  
 
   factory ServiceState.copyWith(
     ServiceState state, {
@@ -22,11 +25,20 @@ class ServiceState {
     int? countFact,
     String? locale,
     bool? apiCataasWork,
+    User? currentUser,
   }) =>
       ServiceState(
+        currentUser: state.currentUser,
         locale: locale ?? state.locale,
         countFact: countFact ?? state.countFact,
         drawerIsOpen: drawerIsOpen ?? state.drawerIsOpen,
         apiCataasWork: apiCataasWork ?? state.apiCataasWork,
+      );
+  factory ServiceState.logOut(ServiceState state) => ServiceState(
+        locale: state.locale,
+        countFact: state.countFact,
+        drawerIsOpen: state.drawerIsOpen,
+        apiCataasWork: state.apiCataasWork,
+        currentUser: null,
       );
 }

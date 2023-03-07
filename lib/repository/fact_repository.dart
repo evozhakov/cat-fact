@@ -57,7 +57,7 @@ class FactRepository {
       String image = await getImage(context);
       String fact = await getFact(context);
       String date = DateFormat('y/M/d HH:mm').format(DateTime.now()).toString();
-      String id = Random().nextInt(10000).toString();
+      String id = const Uuid().v4();
       catFacts.add(
         FactModel(
           date: date,

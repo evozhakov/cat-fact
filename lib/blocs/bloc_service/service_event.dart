@@ -19,3 +19,10 @@ class ChangeLanguageEvent extends ServiceEvent {
 }
 
 class CataasNotWorkEvent extends ServiceEvent {}
+
+class LogOutEvent extends ServiceEvent {}
+
+class SignInEvent extends ServiceEvent {
+  final User currentUser;
+  SignInEvent(this.currentUser);
+}

@@ -1,5 +1,6 @@
 import 'package:cats_fact/blocs/bloc_service/service_bloc.dart';
 import 'package:cats_fact/constants/app_strings.dart';
+import 'package:cats_fact/repository/history_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,6 +16,7 @@ class Settings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final text = AppLocalizations.of(context)!;
+    final historyRepository = HistoryRepository();
 
     final factSettings = [
       SettingsItemModel(
@@ -22,7 +24,7 @@ class Settings extends StatelessWidget {
         trailing: const CountFactWidget(),
       ),
       SettingsItemModel(
-        onTap: () => hiveFactRepository.clearBox(text),
+        onTap: () => historyRepository.clearBox(text),
         title: text.clear,
         icon: Icons.clear,
       ),
